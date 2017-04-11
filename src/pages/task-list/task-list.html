@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar>
+    <button menuToggle *ngIf="!selectedMember">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Task-List</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content center text-center>
+
+  <h2 class="label-title" ion-text color="light" *ngIf="selectedMember" no-padding no-margin>
+        {{selectedMember.firstName}} {{selectedMember.lastName}}
+  </h2>
+
+  <ion-list *ngIf="tasks.length !== 0">
+        <ion-item-sliding *ngFor="let task of tasks">
+          <ion-item>
+            <ion-checkbox checked="{{task.status}}" (click)="task.status = !task.status;" color="dark" item-left></ion-checkbox>
+            <ion-label>{{task.title}}</ion-label>
+            <span class="status-{{task.status}}" [ngClass]="checkDueDate(task.dueDate) && !task.status ? 'blink_me': ''" item-right text-wrap>{{task.dueDate}}</span>
+          </ion-item>
+
+          <ion-item-options color="danger">
+            <button (click)="removeTask(task)"><ion-icon name="trash"></ion-icon> Delete</button>
+          </ion-item-options>
+        </ion-item-sliding>
+  </ion-list>
+
+  <ion-grid *ngIf="tasks.length === 0">
+        <ion-row center>
+              <ion-col col-12>            
+                    <h6 no-padding no-margin>Please click on "Add NewTask" button to Allocate Task.</h6>
+              </ion-col>
+        </ion-row>
+  </ion-grid>
+  
+</ion-content>    
+
+<ion-footer>
+    <button full ion-button (click)="addTask()">Add NewTask</button> 
+</ion-footer>

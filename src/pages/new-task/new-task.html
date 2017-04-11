@@ -1,0 +1,41 @@
+
+<ion-header>
+
+  <ion-toolbar>
+    <ion-title>Add Task</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="close()">
+          <ion-icon name="close"></ion-icon>
+      </button>        
+    </ion-buttons>
+  </ion-toolbar>
+
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list no-lines>
+    <form [formGroup]="newTaskForm">
+        <ion-item>
+            <ion-label floating>Task Title</ion-label>
+            <ion-input formControlName="taskTitle" type="text" [class.invalid]="!newTaskForm.controls.taskTitle.valid && 
+                       (newTaskForm.controls.taskTitle.dirty || submitAttempt)">
+            </ion-input>
+        </ion-item>
+        <ion-item *ngIf="!newTaskForm.controls.taskTitle.valid  && (newTaskForm.controls.taskTitle.dirty || submitAttempt)">
+            <p>Please enter a valid task title.</p>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Due Date</ion-label>
+            <ion-datetime displayFormat="DD-MM-YYYY" formControlName="dueDate" [(ngModel)]="dueDate"></ion-datetime>
+        </ion-item>
+    </form>    
+  </ion-list> 
+</ion-content>
+
+
+<ion-footer>
+  <button full ion-button (click)="saveTask()">Save Task</button> 
+</ion-footer>

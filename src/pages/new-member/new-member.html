@@ -1,0 +1,68 @@
+<ion-header>
+
+  <ion-toolbar>
+    <ion-title>Add Member</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="close()">
+          <ion-icon name="close"></ion-icon>
+      </button>        
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <p *ngIf="submitAttempt" style="color: #ea6153;">Please fill out all details accurately.</p>
+
+  <ion-list no-lines>
+
+    <form [formGroup]="newMemberForm">
+        <ion-item>
+            <ion-label floating>First Name</ion-label>
+            <ion-input formControlName="firstName" type="text"
+            [class.invalid]="!newMemberForm.controls.firstName.valid && 
+            (newMemberForm.controls.firstName.dirty || submitAttempt)"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="!newMemberForm.controls.firstName.valid  && (newMemberForm.controls.firstName.dirty || submitAttempt)">
+          <p>Please enter a valid first name.</p>
+        </ion-item>
+
+        <ion-item>
+            <ion-label floating>Last Name</ion-label>
+            <ion-input formControlName="lastName" type="text"
+            [class.invalid]="!newMemberForm.controls.lastName.valid && 
+            (newMemberForm.controls.lastName.dirty || submitAttempt)"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="!newMemberForm.controls.lastName.valid && 
+            (newMemberForm.controls.lastName.dirty || submitAttempt)">
+            <p>Please enter a valid last name</p>
+        </ion-item>
+
+
+        <ion-item>
+            <ion-label floating>Email</ion-label>
+            <ion-input formControlName="email" type="email"
+            [class.invalid]="!newMemberForm.controls.email.valid &&
+            (newMemberForm.controls.email.dirty || submitAttempt)"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="!newMemberForm.controls.email.valid &&
+            (newMemberForm.controls.email.dirty || submitAttempt)">
+            <p>Please enter a valid email.</p>
+        </ion-item>
+
+        <ion-item> 
+            <ion-label>Gender</ion-label>
+            <ion-select formControlName="gender">
+                <ion-option value="female">Female</ion-option>
+                <ion-option value="male">Male</ion-option>
+            </ion-select>
+        </ion-item>
+    </form>
+    
+  </ion-list>
+ 
+  <button full ion-button (click)="saveMember()">Save</button> 
+  
+</ion-content>

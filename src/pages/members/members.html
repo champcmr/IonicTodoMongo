@@ -1,0 +1,29 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>Members List</ion-title>
+    </ion-navbar>
+</ion-header>   
+
+<ion-content>
+    <ion-list>    
+        <ion-item-sliding *ngFor="let member of members">
+            <ion-item (click)="fnMemberTapped($event, member)">
+                    <span>{{member.firstName}}</span>
+                    <span>{{member.lastName}}</span>
+            </ion-item>        
+         
+            <ion-item-options color="danger">
+                <button (click)="removeMember($event,member)"><ion-icon name="trash"></ion-icon> Delete</button>
+            </ion-item-options>
+       </ion-item-sliding> 
+    </ion-list>
+
+    <ion-fab right bottom>
+        <button ion-fab mini (click)="addMember()">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
+</ion-content>

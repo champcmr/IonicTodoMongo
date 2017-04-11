@@ -1,0 +1,36 @@
+page-task-list{
+    
+    $title-color: #80b3ff;
+    $control-height: 40px;
+
+    .button-bottom{ 
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+
+    .label-vertically-center{
+        height: 100%;
+        display: block;
+        vertical-align: middle;
+    }
+
+    .label-title{
+        background-color: $title-color;
+        padding:5px !important;
+        // height: $control-height;
+    }
+
+    .blink_me {
+        animation: blinker 1s linear infinite;
+        color: red;
+    }
+
+    @keyframes blinker {  
+        50% { opacity: 0; }
+    }
+
+    .status-true{
+        text-decoration: line-through;
+    }
+}
