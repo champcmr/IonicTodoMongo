@@ -13,21 +13,22 @@
         {{selectedMember.firstName}} {{selectedMember.lastName}}
   </h2>
 
-  <ion-list *ngIf="tasks.length !== 0">
+  <ion-list *ngIf="tasks.length !== 0 && !isLoading">
         <ion-item-sliding *ngFor="let task of tasks"> 
           <ion-item>
-            <ion-checkbox checked="{{task.status}}" (click)="task.status = !task.status;modifyTask(task);" color="dark" item-left></ion-checkbox>
-            <ion-label>{{task.title}}</ion-label>
+            <ion-checkbox checked="false" (click)="modifyTask(task)" 
+                          [(ngModel)]="task.status" color="dark" item-left></ion-checkbox>
+            <ion-label class="status-{{task.status}}">{{task.title}}</ion-label>
             <span class="status-{{task.status}}" [ngClass]="checkDueDate(task.dueDate) && !task.status ? 'blink_me': ''" item-right text-wrap>{{task.dueDate}}</span>
           </ion-item>
-
+           <!--[ngClass]="{'blink_me':checkDueDate(task.dueDate)}"-->
           <ion-item-options color="danger">
             <button (click)="removeTask(task)"><ion-icon name="trash"></ion-icon> Delete</button>
           </ion-item-options>
         </ion-item-sliding>
   </ion-list>
 
-  <ion-grid *ngIf="tasks.length === 0">
+  <ion-grid *ngIf="tasks.length === 0 && !isLoading">
         <ion-row center>
               <ion-col col-12>            
                     <h6 no-padding no-margin>Please click on "Add NewTask" button to Allocate Task.</h6>
@@ -38,5 +39,5 @@
 </ion-content>    
 
 <ion-footer>
-    <button full ion-button (click)="addTask()">Add NewTask</button> 
+    <button full ion-button (click)="openTaskModal()">Add NewTask</button> 
 </ion-footer>

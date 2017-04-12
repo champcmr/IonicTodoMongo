@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, LoadingController, NavParams, ModalController } from 'ionic-angular';
 
 import { NewTaskModal } from '../new-task/new-task';
 import { TaskService } from '../../providers/task-service';
@@ -12,26 +12,39 @@ import * as moment from 'moment';
 
 export class TaskListPage{
   selectedMember: any;
+  isLoading: boolean;
   tasks;
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
               public modal : ModalController,
+              public loading: LoadingController,
               public taskService: TaskService
               ) {  
       this.tasks = [];          
   }
 
   ionViewDidLoad(){
+      let loader = this.loading.create({
+            content: 'Getting Tasks...',
+      });
       this.selectedMember = this.navParams.get('selectedMember');
-      this.getTasks(this.selectedMember._id);
+
+      loader.present().then(()=>{
+            this.getTasks(loader, this.selectedMember._id);
+      });
+      
   }
 
-  getTasks(memberId){
+  getTasks(loader, memberId){
+      console.log('Get Task: ',memberId);
+      this.isLoading = true;
       this.taskService.getTasks(memberId).then((data)=>{
         if(data){
           this.tasks = data;
-        }
+          this.isLoading = false;
+        }  
+        loader.dismiss();
       })
   }
 
@@ -40,7 +53,7 @@ export class TaskListPage{
   }
 
   modifyTask(task){
-    console.log('Modi: ',task);
+    // console.log('Modify: ',task.status);
     this.taskService.updateTask(task);
   }
 
@@ -54,19 +67,13 @@ export class TaskListPage{
       this.taskService.deleteTask(task._id);
   }
 
-  saveTaskToStorage(task){
-      // store memberId with each task
-      task["refMemberId"] = this.selectedMember._id;
-      this.tasks.push(task);
-      this.taskService.addTask(task);    
-  }
-
-  addTask(){
-      let addTaskModal = this.modal.create(NewTaskModal);
+  openTaskModal(){
+    
+      let addTaskModal = this.modal.create(NewTaskModal,this.selectedMember);
 
       addTaskModal.onDidDismiss((task)=>{ 
           if(task){
-              this.saveTaskToStorage(task);
+              this.tasks.push(task);
           }
       });
 

@@ -27,7 +27,7 @@ export class TaskService {
     // }
 
     return new Promise(resolve => {
-      this.http.get('http://localhost:8080/api/tasks/'+memberId)
+      this.http.get('http://192.168.0.113:8080/api/tasks/'+memberId)
               .map(res => res.json())
               .subscribe(data => {
                   // this.tasksData = data;
@@ -38,20 +38,20 @@ export class TaskService {
   }
 
   addTask(task){
-      this.http.post('http://localhost:8080/api/add-task',JSON.stringify(task), {headers: this.headers})
+      this.http.post('http://192.168.0.113:8080/api/add-task',JSON.stringify(task), {headers: this.headers})
       .subscribe(res => {
           // console.log('after adding task: ',res.json());
       });
   }
 
   deleteTask(id){
-    this.http.delete('http://localhost:8080/api/delete-task/' + id).subscribe((res) => {
+    this.http.delete('http://192.168.0.113:8080/api/delete-task/' + id).subscribe((res) => {
       // console.log(res.json());
     });    
   }
 
   updateTask(task){
-    this.http.put('http://localhost:8080/api/update-task/' + task._id, JSON.stringify(task), {headers: this.headers})
+    this.http.put('http://192.168.0.113:8080/api/update-task/' + task.taskId, JSON.stringify(task), {headers: this.headers})
       .subscribe(res =>{});
   }
 

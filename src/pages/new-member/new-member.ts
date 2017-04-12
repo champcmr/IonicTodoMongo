@@ -24,7 +24,7 @@ export class NewMemberModal{
                 public view: ViewController,
                 public formBuilder: FormBuilder,
                 public memberService: MemberService){
-
+               
         this.newMemberForm = formBuilder.group({
             firstName: [ '',
                             Validators.compose([ 
@@ -65,7 +65,6 @@ export class NewMemberModal{
                 email: this.newMemberForm.controls['email'].value,
                 gender : this.newMemberForm.controls['gender'].value
             }
-            console.log("success!",newMember);
             this.memberService.saveMember(newMember);
             this.view.dismiss(newMember);
         }

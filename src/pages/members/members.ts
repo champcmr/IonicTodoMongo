@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController, ModalController } from 'ionic-angular';
+import { NavController, LoadingController, ModalController } from 'ionic-angular';
 
 import {TaskListPage} from '../task-list/task-list';
 import {NewMemberModal} from '../new-member/new-member';
@@ -15,21 +15,35 @@ import {MemberService} from '../../providers/member-service';
 
 export class MembersPage {
 
+    isLoading : boolean;
     members;
 
     constructor( public navCtrl: NavController, 
                  public modal: ModalController,
+                 public loading: LoadingController,
                  public memberService: MemberService){     
         this.members = [];                             
     }   
 
     ionViewDidLoad(){
-        this.getMembers();
+         let loader = this.loading.create({
+            content: 'Getting Members...',
+         });
+
+         loader.present().then(()=>{
+            this.getMembers(loader);
+            // loader.dismiss();
+         });
     }
 
-    getMembers(){
+    getMembers(loader){
+        this.isLoading = true;
         this.memberService.getMembers().then((data)=>{
-            this.members = data; 
+            if(data){
+                this.members = data;             
+                this.isLoading = false;                
+            }
+            loader.dismiss();
         });
     }
 

@@ -8,9 +8,9 @@
 </ion-header>   
 
 <ion-content>
-    <ion-list *ngIf="members.length !== 0">    
+    <ion-list *ngIf="members.length !== 0 && !isLoading">    
         <ion-item-sliding *ngFor="let member of members; let i = index">
-            <ion-item [ngClass]="i % 2 === 0 ? 'ion-item-color': ''" (click)="viewMemberTask($event, member)">
+            <ion-item [ngClass]="i%2 === 0 ? 'ion-item-color': ''" (click)="viewMemberTask($event, member)">
                     <span>{{member.firstName}}</span>
                     <span>{{member.lastName}}</span>
             </ion-item>        
@@ -21,7 +21,7 @@
        </ion-item-sliding> 
     </ion-list>
 
-    <ion-grid *ngIf="members.length === 0">
+    <ion-grid *ngIf="members.length === 0 && !isLoading">
         <ion-row center>
               <ion-col col-12>            
                     <h6 no-padding no-margin>Please click on "+" button to Create member.</h6>

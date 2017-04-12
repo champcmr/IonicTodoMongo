@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
+
+import {TaskService} from '../../providers/task-service';
 
 @Component({
   selector: 'page-new-task',
@@ -11,11 +13,15 @@ export class NewTaskModal {
   
   newTaskForm: FormGroup;
   submitAttempt: boolean = false;
+  paramMemberId : string = this.navParams.get('_id');
 
   dueDate;
   
-  constructor(public navCtrl: NavController, public view: ViewController,
-                public formBuilder: FormBuilder) {
+  constructor(  public navCtrl: NavController,
+                public view: ViewController,
+                public navParams :NavParams,
+                public formBuilder: FormBuilder,
+                public taskService: TaskService) {
     
     this.dueDate = new Date().toISOString();
 
@@ -46,10 +52,13 @@ export class NewTaskModal {
     }else {
       let newTask = {
         taskId : this.generateRandomId(),
+        refMemberId: this.paramMemberId,
         status : false,
         title : this.newTaskForm.controls['taskTitle'].value,
         dueDate : moment(this.dueDate).format("YYYY-MM-DD"),
       }
+      console.log('New Task: ',newTask);
+      this.taskService.addTask(newTask);   
       this.view.dismiss(newTask);
     }
   }
