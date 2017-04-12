@@ -15,11 +15,12 @@ import {MemberService} from '../../providers/member-service';
 
 export class MembersPage {
 
-    members = [];
+    members;
 
     constructor( public navCtrl: NavController, 
                  public modal: ModalController,
-                 public memberService: MemberService){                                  
+                 public memberService: MemberService){     
+        this.members = [];                             
     }   
 
     ionViewDidLoad(){
@@ -29,11 +30,10 @@ export class MembersPage {
     getMembers(){
         this.memberService.getMembers().then((data)=>{
             this.members = data; 
-            console.log('Data: ',data);
         });
     }
 
-    fnMemberTapped(event, member){
+    viewMemberTask(event, member){
         this.navCtrl.push(TaskListPage, {
             selectedMember : member
         });
@@ -48,17 +48,12 @@ export class MembersPage {
         this.memberService.deleteMember(member._id);
     }
 
-    saveMemberToStorage(member){
-        this.members.push(member);
-        this.memberService.saveMember(member);
-    }
-
-    addMember(){
+    openMemberModal(){
         let addMemberModal = this.modal.create(NewMemberModal);
 
         addMemberModal.onDidDismiss((member)=>{
             if(member){
-                this.saveMemberToStorage(member);
+                this.members.push(member);
             }
         });
     

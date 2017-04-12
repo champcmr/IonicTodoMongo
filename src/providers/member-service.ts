@@ -11,25 +11,25 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class MemberService {
 
-  membersData : any;
+  // membersData : any;
 
   constructor(public http: Http) {
     console.log('Hello MemberService Provider');
-    this.membersData = null;
+    // this.membersData = null;
   }
 
   getMembers(){
     
-    if(this.membersData){
-      return Promise.resolve(this.membersData);
-    }
+    // if(this.membersData){
+    //   return Promise.resolve(this.membersData);
+    // }
 
     return new Promise(resolve => {
       this.http.get('http://localhost:8080/api/members')
               .map(res => res.json())
               .subscribe(data => {
-                  this.membersData = data;
-                  resolve(this.membersData);
+                // this.membersData = data;
+                  resolve(data);
               });
     })
  

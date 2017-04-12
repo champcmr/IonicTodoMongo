@@ -14,9 +14,9 @@
   </h2>
 
   <ion-list *ngIf="tasks.length !== 0">
-        <ion-item-sliding *ngFor="let task of tasks">
+        <ion-item-sliding *ngFor="let task of tasks"> 
           <ion-item>
-            <ion-checkbox checked="{{task.status}}" (click)="task.status = !task.status;" color="dark" item-left></ion-checkbox>
+            <ion-checkbox checked="{{task.status}}" (click)="task.status = !task.status;modifyTask(task);" color="dark" item-left></ion-checkbox>
             <ion-label>{{task.title}}</ion-label>
             <span class="status-{{task.status}}" [ngClass]="checkDueDate(task.dueDate) && !task.status ? 'blink_me': ''" item-right text-wrap>{{task.dueDate}}</span>
           </ion-item>

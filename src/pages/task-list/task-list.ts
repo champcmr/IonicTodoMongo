@@ -12,13 +12,15 @@ import * as moment from 'moment';
 
 export class TaskListPage{
   selectedMember: any;
-  tasks = [];
+  tasks;
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,
               public modal : ModalController,
               public taskService: TaskService
-              ) {  }
+              ) {  
+      this.tasks = [];          
+  }
 
   ionViewDidLoad(){
       this.selectedMember = this.navParams.get('selectedMember');
@@ -26,24 +28,20 @@ export class TaskListPage{
   }
 
   getTasks(memberId){
-    this.taskService.getTasks(memberId).then((data)=>{
-      if(data){
-        this.tasks = data;
-         console.log('Task: ',this.tasks);
-      }else{
-        console.log('Task Not Avail');
-      }
-    })
+      this.taskService.getTasks(memberId).then((data)=>{
+        if(data){
+          this.tasks = data;
+        }
+      })
   }
 
   checkDueDate(taskDate){
-    console.log('due date: ',taskDate);
-    console.log('return: ',moment().diff(moment(taskDate),'days'));
-    return moment().diff(moment(taskDate),'days') > 0 ? true : false;
+      return moment().diff(moment(taskDate),'days') > 0 ? true : false;
   }
 
   modifyTask(task){
-    
+    console.log('Modi: ',task);
+    this.taskService.updateTask(task);
   }
 
   removeTask(task){
@@ -57,22 +55,22 @@ export class TaskListPage{
   }
 
   saveTaskToStorage(task){
-    // store memberId with each task
-    task["refMemberId"] = this.selectedMember._id;
-    this.tasks.push(task);
-    this.taskService.addTask(task);    
+      // store memberId with each task
+      task["refMemberId"] = this.selectedMember._id;
+      this.tasks.push(task);
+      this.taskService.addTask(task);    
   }
 
   addTask(){
-    let addTaskModal = this.modal.create(NewTaskModal);
+      let addTaskModal = this.modal.create(NewTaskModal);
 
-    addTaskModal.onDidDismiss((task)=>{
-        if(task){
-            this.saveTaskToStorage(task);
-        }
-    });
+      addTaskModal.onDidDismiss((task)=>{ 
+          if(task){
+              this.saveTaskToStorage(task);
+          }
+      });
 
-    addTaskModal.present();
+      addTaskModal.present();
   }
 
 }

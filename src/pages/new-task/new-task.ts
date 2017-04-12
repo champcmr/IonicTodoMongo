@@ -14,7 +14,6 @@ export class NewTaskModal {
 
   dueDate;
   
-
   constructor(public navCtrl: NavController, public view: ViewController,
                 public formBuilder: FormBuilder) {
     

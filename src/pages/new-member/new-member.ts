@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { NavController, ViewController } from 'ionic-angular';
 
+import {MemberService} from '../../providers/member-service';
+
 @Component({
     selector:'new-member',
     templateUrl : '../new-member/new-member.html'
@@ -20,7 +22,8 @@ export class NewMemberModal{
 
     constructor(public navctrl: NavController,
                 public view: ViewController,
-                public formBuilder: FormBuilder){
+                public formBuilder: FormBuilder,
+                public memberService: MemberService){
 
         this.newMemberForm = formBuilder.group({
             firstName: [ '',
@@ -63,6 +66,7 @@ export class NewMemberModal{
                 gender : this.newMemberForm.controls['gender'].value
             }
             console.log("success!",newMember);
+            this.memberService.saveMember(newMember);
             this.view.dismiss(newMember);
         }
     }

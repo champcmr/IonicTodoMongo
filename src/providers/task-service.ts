@@ -11,35 +11,34 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class TaskService {
 
-  tasksData : any;
+  // tasksData : any;
+  headers = new Headers();
 
   constructor(public http: Http) {
     console.log('Hello TaskService Provider');
-    this.tasksData = null;
+    // this.tasksData = null;
+    this.headers.append('Content-Type', 'application/json');
   }
 
   getTasks(memberId){
     
-    if(this.tasksData){
-      return Promise.resolve(this.tasksData);
-    }
+    // if(this.tasksData){
+    //   return Promise.resolve(this.tasksData);
+    // }
 
     return new Promise(resolve => {
       this.http.get('http://localhost:8080/api/tasks/'+memberId)
               .map(res => res.json())
               .subscribe(data => {
-                  this.tasksData = data;
-                  resolve(this.tasksData);
+                  // this.tasksData = data;
+                  resolve(data);
               });
     })
 
   }
 
   addTask(task){
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-
-      this.http.post('http://localhost:8080/api/add-task',JSON.stringify(task), {headers: headers})
+      this.http.post('http://localhost:8080/api/add-task',JSON.stringify(task), {headers: this.headers})
       .subscribe(res => {
           // console.log('after adding task: ',res.json());
       });
@@ -49,6 +48,11 @@ export class TaskService {
     this.http.delete('http://localhost:8080/api/delete-task/' + id).subscribe((res) => {
       // console.log(res.json());
     });    
+  }
+
+  updateTask(task){
+    this.http.put('http://localhost:8080/api/update-task/' + task._id, JSON.stringify(task), {headers: this.headers})
+      .subscribe(res =>{});
   }
 
 }

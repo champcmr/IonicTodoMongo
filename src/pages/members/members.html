@@ -8,9 +8,9 @@
 </ion-header>   
 
 <ion-content>
-    <ion-list>    
-        <ion-item-sliding *ngFor="let member of members">
-            <ion-item (click)="fnMemberTapped($event, member)">
+    <ion-list *ngIf="members.length !== 0">    
+        <ion-item-sliding *ngFor="let member of members; let i = index">
+            <ion-item [ngClass]="i % 2 === 0 ? 'ion-item-color': ''" (click)="viewMemberTask($event, member)">
                     <span>{{member.firstName}}</span>
                     <span>{{member.lastName}}</span>
             </ion-item>        
@@ -21,8 +21,16 @@
        </ion-item-sliding> 
     </ion-list>
 
+    <ion-grid *ngIf="members.length === 0">
+        <ion-row center>
+              <ion-col col-12>            
+                    <h6 no-padding no-margin>Please click on "+" button to Create member.</h6>
+              </ion-col>
+        </ion-row>
+  </ion-grid>
+
     <ion-fab right bottom>
-        <button ion-fab mini (click)="addMember()">
+        <button ion-fab mini (click)="openMemberModal()">
             <ion-icon name="add"></ion-icon>
         </button>
     </ion-fab>
